@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git init *)",
+      "Bash(git branch *)",
+      "Bash(git remote *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(ls -la ~/.ssh 2>&1 | head -20)",
+      "Read(//c/Users/jeanj/.ssh/**)",
+      "Bash(ssh -T git@github.com)",
+      "Bash(gh auth *)",
+      "Bash(ssh-keygen -t ed25519 -C \"jeanjcu@gmail.com\" -f ~/.ssh/id_ed25519 -N \"\")",
+      "Bash(ssh -o StrictHostKeyChecking=accept-new -T git@github.com)"
+    ]
+  }
+}
