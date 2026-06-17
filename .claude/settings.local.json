@@ -13,7 +13,9 @@
       "Bash(ssh -T git@github.com)",
       "Bash(gh auth *)",
       "Bash(ssh-keygen -t ed25519 -C \"jeanjcu@gmail.com\" -f ~/.ssh/id_ed25519 -N \"\")",
-      "Bash(ssh -o StrictHostKeyChecking=accept-new -T git@github.com)"
+      "Bash(ssh -o StrictHostKeyChecking=accept-new -T git@github.com)",
+      "Bash(start \"\" \"index.html\")",
+      "Bash(cmd.exe /c \"start index.html\")"
     ]
   }
 }

@@ -74,6 +74,10 @@ h2.title {
   line-height:1.02; letter-spacing:.005em; margin:0;
   text-wrap:balance;
 }
+h2.title--loc {
+  font-size:clamp(1.9rem,4.2vw,3.4rem);
+  overflow-wrap:break-word;
+}
 .lead {
   font-size:clamp(1.05rem,1.7vw,1.32rem);
   line-height:1.62; color:var(--muted); max-width:46ch; font-weight:300;
@@ -114,7 +118,7 @@ h2.title {
   padding:14px var(--gutter);
   box-shadow:0 1px 0 var(--line-soft);
 }
-.brand { display:flex; align-items:baseline; gap:.55em; line-height:1; }
+.brand { display:flex; align-items:baseline; gap:.55em; line-height:1; flex-shrink:0; white-space:nowrap; }
 .brand .mark {
   font-family:var(--serif); font-weight:600; font-size:1.5rem; letter-spacing:.02em;
 }
@@ -123,12 +127,13 @@ h2.title {
   opacity:.72; padding-bottom:2px;
 }
 .brand .dot { width:5px; height:5px; border-radius:50%; background:var(--champagne); align-self:center; margin-bottom:2px; }
-.nav-links { display:flex; align-items:center; gap:clamp(15px,1.9vw,32px); }
+.nav-links { display:flex; align-items:center; gap:clamp(12px,1.2vw,24px); flex-wrap:nowrap; }
 .nav-only-mobile { display:none !important; }
 .nav-links a {
   font-family:var(--sans); font-size:.72rem; font-weight:400;
-  letter-spacing:.13em; text-transform:uppercase; opacity:.86;
+  letter-spacing:.1em; text-transform:uppercase; opacity:.86;
   position:relative; padding:4px 0;
+  white-space:nowrap;
 }
 .nav-links a::after {
   content:''; position:absolute; left:0; bottom:0; height:1px; width:0; background:var(--champagne);
@@ -137,14 +142,15 @@ h2.title {
 .nav-links a:hover { opacity:1; }
 .nav-links a:hover::after { width:100%; }
 .nav-cta {
-  font-family:var(--sans); font-size:.7rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
-  padding:.7em 1.4em; border:1px solid currentColor; border-radius:0;
+  font-family:var(--sans); font-size:.7rem; font-weight:500; letter-spacing:.14em; text-transform:uppercase;
+  padding:.7em 1.2em; border:1px solid currentColor; border-radius:0;
   transition:background .35s ease, color .35s ease;
+  white-space:nowrap; flex-shrink:0;
 }
 .nav.scrolled .nav-cta:hover { background:var(--fg); color:var(--paper); }
 .nav:not(.scrolled) .nav-cta:hover { background:var(--paper); color:var(--noir); }
-.nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:0; padding:6px; }
-.nav-toggle span { width:24px; height:1.5px; background:currentColor; transition:transform .3s ease, opacity .3s ease; }
+.nav-toggle { display:none; flex-direction:column; gap:6px; background:none; border:0; padding:8px; }
+.nav-toggle span { width:28px; height:2.5px; background:var(--champagne); border-radius:1px; transition:transform .3s ease, opacity .3s ease, background .3s ease; }
 
 /* ── hero ─────────────────────────────────────────────────── */
 .hero {
@@ -205,6 +211,11 @@ h2.title {
 .stat:nth-child(2n) { border-right:0; padding-left:clamp(18px,3vw,42px); }
 .stat:nth-child(2n+1) { padding-right:clamp(18px,3vw,42px); }
 .stat .num { font-family:var(--serif); font-weight:500; font-size:clamp(2.4rem,5vw,3.6rem); line-height:1; }
+.stat .num--loc {
+  font-size:clamp(1.15rem,2.1vw,1.85rem);
+  line-height:1.15; letter-spacing:.005em;
+  overflow-wrap:break-word;
+}
 .stat .num .u { font-size:.42em; color:var(--champagne-deep); margin-left:.15em; }
 .stat .lab { font-family:var(--sans); font-size:.7rem; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); margin-top:12px; }
 
@@ -352,7 +363,7 @@ html.js .reveal-img.shown { clip-path:inset(0 0 0 0) !important; transform:none 
 .reveal.d4 { transition-delay:.32s; }
 
 /* ── responsive ───────────────────────────────────────────── */
-@media (max-width:1024px){
+@media (max-width:1280px){
   .nav.menu-open { color:var(--fg); }
   .nav-links { display:none; }
   .nav-cta { display:none; }
@@ -364,10 +375,10 @@ html.js .reveal-img.shown { clip-path:inset(0 0 0 0) !important; transform:none 
   }
   .nav.menu-open .nav-links a { font-size:1.15rem; opacity:1; letter-spacing:.12em; }
   .nav.menu-open .nav-only-mobile { display:block !important; }
-  .nav.menu-open .nav-toggle span { background:var(--fg); }
-  .nav.menu-open .nav-toggle span:nth-child(1){ transform:translateY(6.5px) rotate(45deg); }
+  .nav.menu-open .nav-toggle span { background:var(--champagne-deep); }
+  .nav.menu-open .nav-toggle span:nth-child(1){ transform:translateY(8.5px) rotate(45deg); }
   .nav.menu-open .nav-toggle span:nth-child(2){ opacity:0; }
-  .nav.menu-open .nav-toggle span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg); }
+  .nav.menu-open .nav-toggle span:nth-child(3){ transform:translateY(-8.5px) rotate(-45deg); }
 }
 @media (max-width:900px){
   .intro-grid, .split, .split--rev .split-media, .loc-grid, .res-grid, .contact-grid { grid-template-columns:1fr; }
@@ -474,6 +485,49 @@ html.js .reveal-img.shown { clip-path:inset(0 0 0 0) !important; transform:none 
   .amen-extras { grid-template-columns:repeat(2,1fr); }
   .amen-extras li:nth-child(2n), .amen-extras li:last-child { border-right:0; }
   .plan-split { grid-template-columns:1fr; }
+}
+
+/* ── disponibilidad · unit cards ──────────────────────────── */
+.units-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap:clamp(18px,2.2vw,28px);
+  margin-top:clamp(48px,7vw,84px);
+}
+.unit-card {
+  background:var(--card);
+  border:1px solid var(--line-soft);
+  padding:clamp(28px,3vw,40px) clamp(26px,2.6vw,36px) clamp(30px,3.2vw,40px);
+  display:flex; flex-direction:column;
+  transition:border-color .4s ease, transform .4s ease, box-shadow .4s ease;
+}
+.unit-card:hover {
+  border-color:var(--champagne);
+  transform:translateY(-3px);
+  box-shadow:0 18px 40px -22px rgba(0,0,0,.18);
+}
+.unit-head { padding-bottom:22px; border-bottom:1px solid var(--line-soft); display:flex; flex-direction:column; gap:10px; }
+.unit-tag { font-weight:500; font-size:clamp(1.35rem,1.9vw,1.7rem); line-height:1.1; letter-spacing:.005em; }
+.unit-meta { font-family:var(--sans); font-size:.66rem; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); display:flex; flex-wrap:wrap; gap:8px; }
+.unit-meta .um-sep { color:var(--champagne); }
+.unit-price { display:flex; flex-direction:column; gap:6px; padding:22px 0 4px; }
+.up-label { font-family:var(--sans); font-size:.66rem; letter-spacing:.28em; text-transform:uppercase; color:var(--muted-2); }
+.up-amount { font-weight:500; font-size:clamp(2rem,3.3vw,2.6rem); line-height:1.05; color:var(--fg); }
+.unit-plan { list-style:none; padding:0; margin:18px 0 30px; flex:1; }
+.unit-plan li {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:13px 0; gap:14px;
+  border-bottom:1px solid var(--line-soft);
+  font-size:.92rem;
+}
+.unit-plan li:last-child { border-bottom:0; }
+.unit-plan li > span:first-child { color:var(--muted); font-weight:300; }
+.unit-plan li .up-val { font-size:1.02rem; color:var(--fg); white-space:nowrap; font-weight:500; }
+.unit-cta { align-self:flex-start; }
+.units-foot {
+  margin-top:clamp(28px,3.6vw,44px);
+  font-size:.86rem; color:var(--muted-2);
+  max-width:62ch; font-style:italic;
 }
 
 /* reserva band */
