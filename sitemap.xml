@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://canachicresidences.com/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/og-image.jpg</image:loc>
+      <image:title>Cana Chic Residences — Santiago, República Dominicana</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/render-corner.jpg</image:loc>
+      <image:title>Vista del conjunto residencial</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/render-facade.jpg</image:loc>
+      <image:title>Fachada</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/render-street.jpg</image:loc>
+      <image:title>Vista de calle</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/aerial.jpg</image:loc>
+      <image:title>Vista aérea del entorno</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/interior-kitchen.jpg</image:loc>
+      <image:title>Interior — cocina</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/interior-bedroom.jpg</image:loc>
+      <image:title>Interior — habitación</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/interior-dining.jpg</image:loc>
+      <image:title>Interior — comedor</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/amenity-pool.jpg</image:loc>
+      <image:title>Amenidad — piscina</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/amenity-gym-a.jpg</image:loc>
+      <image:title>Amenidad — gimnasio</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://canachicresidences.com/assets/amenity-lounge.jpg</image:loc>
+      <image:title>Amenidad — lounge</image:title>
+    </image:image>
+  </url>
+</urlset>
