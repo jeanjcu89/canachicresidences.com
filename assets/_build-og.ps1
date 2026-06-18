@@ -36,22 +36,22 @@ $srcRect = New-Object System.Drawing.Rectangle($cropX, $cropY, $cropW, $cropH)
 $destRect = New-Object System.Drawing.Rectangle(0, 0, $W, $H)
 $g.DrawImage($img, $destRect, $srcRect, [System.Drawing.GraphicsUnit]::Pixel)
 
-# Heavy uniform black overlay so the centered text reads clearly
-$darkBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(165, 0, 0, 0))
+# Lighter uniform black overlay — lets more of the render show through
+$darkBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(115, 0, 0, 0))
 $g.FillRectangle($darkBrush, (New-Object System.Drawing.Rectangle(0, 0, $W, $H)))
 
-# Vertical gradient — extra darkness top and bottom, gentlest in the middle band
+# Softer vertical gradient — gentle vignette top and bottom for text contrast
 $gradBrush = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
   (New-Object System.Drawing.PointF(0, 0)),
   (New-Object System.Drawing.PointF(0, $H)),
-  [System.Drawing.Color]::FromArgb(180, 0, 0, 0),
-  [System.Drawing.Color]::FromArgb(200, 0, 0, 0)
+  [System.Drawing.Color]::FromArgb(120, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(140, 0, 0, 0)
 )
 $blend = New-Object System.Drawing.Drawing2D.ColorBlend(3)
 $blend.Colors = @(
-  [System.Drawing.Color]::FromArgb(180, 0, 0, 0),
-  [System.Drawing.Color]::FromArgb(40, 0, 0, 0),
-  [System.Drawing.Color]::FromArgb(200, 0, 0, 0)
+  [System.Drawing.Color]::FromArgb(120, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(15, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(140, 0, 0, 0)
 )
 $blend.Positions = @(0.0, 0.5, 1.0)
 $gradBrush.InterpolationColors = $blend
