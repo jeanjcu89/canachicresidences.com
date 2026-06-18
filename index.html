@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 <title>Cana Chic Residences — Avenida Hispanoamericana, Santiago</title>
 <meta name="description" content="96 residencias de arquitectura contemporánea sobre la Avenida Hispanoamericana, Santiago de los Caballeros. Entrega diciembre 2026. Constructora Chic." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -424,7 +426,11 @@
         </div>
       </div>
 
-      <form class="form" id="leadForm" novalidate>
+      <form class="form" id="leadForm" action="https://api.web3forms.com/submit" method="POST" novalidate>
+        <input type="hidden" name="access_key" value="10f3d636-2c47-4e90-979e-9506d483ace7" />
+        <input type="hidden" name="subject" value="Nueva solicitud — Cana Chic Residences" />
+        <input type="hidden" name="from_name" value="Cana Chic Residences · Web" />
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="field">
           <label for="f-nombre">Nombre</label>
           <input id="f-nombre" name="nombre" type="text" placeholder="Tu nombre" required />
@@ -451,9 +457,13 @@
           <textarea id="f-msg" name="mensaje" placeholder="Cuéntanos qué buscas…"></textarea>
         </div>
         <div class="actions">
-          <button class="btn btn--champagne" type="submit">Enviar solicitud <span class="arr">→</span></button>
+          <button class="btn btn--champagne" id="formSubmit" type="submit">
+            <span class="btn-label">Enviar solicitud</span>
+            <span class="arr">→</span>
+          </button>
           <p class="form-note">Te contactaremos a la brevedad. Tus datos son confidenciales.</p>
         </div>
+        <div class="form-error" id="formError" role="alert"></div>
         <div class="form-success" id="formSuccess">
           <div class="fs-t serif">¡Gracias! Hemos recibido tu solicitud.</div>
           <div class="fs-d">Un asesor de Cana Chic Residences se pondrá en contacto contigo muy pronto.</div>
@@ -607,8 +617,11 @@
     t.addEventListener('keydown', function(e){ if (e.key==='Enter'){ var im=t.querySelector('img[data-zoom]'); if(im) im.click(); } });
   });
 
-  /* inquiry form */
+  /* inquiry form — posts JSON to Web3Forms; native POST is the no-JS fallback */
   var form = document.getElementById('leadForm');
+  var submitBtn = document.getElementById('formSubmit');
+  var submitLabel = submitBtn.querySelector('.btn-label');
+  var formError = document.getElementById('formError');
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var nombre = form.nombre.value.trim();
@@ -620,8 +633,30 @@
       });
       return;
     }
-    form.querySelectorAll('.field, .actions').forEach(function(el){ el.style.display='none'; });
-    document.getElementById('formSuccess').classList.add('show');
+
+    formError.classList.remove('show');
+    submitBtn.disabled = true;
+    submitLabel.textContent = 'Enviando…';
+
+    var payload = {};
+    new FormData(form).forEach(function(v, k){ payload[k] = v; });
+
+    fetch('https://api.web3forms.com/submit', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      return r.json().then(function(j){ return { ok:r.ok && j.success, data:j }; });
+    }).then(function(res){
+      if (!res.ok) throw new Error((res.data && res.data.message) || 'submit_failed');
+      form.querySelectorAll('.field, .actions, .form-error').forEach(function(el){ el.style.display='none'; });
+      document.getElementById('formSuccess').classList.add('show');
+    }).catch(function(){
+      submitBtn.disabled = false;
+      submitLabel.textContent = 'Enviar solicitud';
+      formError.textContent = 'No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos a info@constructorachicsrl.com.';
+      formError.classList.add('show');
+    });
   });
 })();
 </script>

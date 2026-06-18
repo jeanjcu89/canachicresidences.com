@@ -336,6 +336,15 @@ h2.title--loc {
 .form-success.show { display:block; }
 .form-success .fs-t { font-family:var(--serif); font-size:1.8rem; color:var(--champagne); }
 .form-success .fs-d { color:var(--paper-dim); margin-top:6px; }
+.form-error {
+  grid-column:1/-1; display:none;
+  font-family:var(--sans); font-size:.86rem; line-height:1.55;
+  color:#f0c8a0; padding:14px 16px; margin-top:4px;
+  border:1px solid rgba(240,200,160,.32); background:rgba(240,200,160,.06);
+}
+.form-error.show { display:block; }
+.botcheck { position:absolute; left:-9999px; width:1px; height:1px; opacity:0; pointer-events:none; }
+.form .btn[disabled] { opacity:.55; pointer-events:none; }
 
 /* ── footer ───────────────────────────────────────────────── */
 .footer { background:var(--noir); color:var(--paper-dim); padding:clamp(56px,8vw,90px) var(--gutter) 40px; }
