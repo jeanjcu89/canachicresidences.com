@@ -73,17 +73,26 @@ $titleFont = New-Object System.Drawing.Font("Georgia", 82, [System.Drawing.FontS
 $subtitleFont = New-Object System.Drawing.Font("Georgia", 36, [System.Drawing.FontStyle]::Italic)
 $whiteBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 244, 241, 234))
 
-# Layout: tag (top of stack), title, subtitle — vertically centered as a group
+# CTA setup — measure first so we can include it in the vertical stack
+$oAcute = [char]0xD3
+$ctaText = "SOLICITA INFORMACI$($oAcute)N  $([char]0x2192)"
+$ctaFont = New-Object System.Drawing.Font("Arial", 18, [System.Drawing.FontStyle]::Bold)
+$ctaSize = $g.MeasureString($ctaText, $ctaFont)
+$ctaPadH = 28
+$ctaPadV = 16
+$ctaW = [int]($ctaSize.Width + $ctaPadH * 2)
+$ctaH = [int]($ctaSize.Height + $ctaPadV * 2)
+
+# Layout: tag, title, subtitle, CTA — vertically centered as a group
 $tagSize = $g.MeasureString($tagText, $tagFont)
 $titleSize = $g.MeasureString("Cana Chic Residences", $titleFont)
 $subtitleSize = $g.MeasureString("Avenida Hispanoamericana, Santiago", $subtitleFont)
 
 $gapTagTitle = 24
-$gapTitleSub = 16
-$stackH = $tagSize.Height + $gapTagTitle + $titleSize.Height + $gapTitleSub + $subtitleSize.Height
+$gapTitleSub = 14
+$gapSubCta = 36
+$stackH = $tagSize.Height + $gapTagTitle + $titleSize.Height + $gapTitleSub + $subtitleSize.Height + $gapSubCta + $ctaH
 $stackY = ($H - $stackH) / 2
-
-$cx = $W / 2
 
 # Draw tag
 $tagRect = New-Object System.Drawing.RectangleF(0, $stackY, $W, $tagSize.Height)
@@ -98,6 +107,15 @@ $g.DrawString("Cana Chic Residences", $titleFont, $whiteBrush, $titleRect, $strF
 $subY = $titleY + $titleSize.Height + $gapTitleSub
 $subRect = New-Object System.Drawing.RectangleF(0, $subY, $W, $subtitleSize.Height)
 $g.DrawString("Avenida Hispanoamericana, Santiago", $subtitleFont, $whiteBrush, $subRect, $strFmt)
+
+# Draw CTA pill — centered
+$ctaY = [int]($subY + $subtitleSize.Height + $gapSubCta)
+$ctaX = [int](($W - $ctaW) / 2)
+$pillPath = New-Object System.Drawing.Drawing2D.GraphicsPath
+$pillPath.AddRectangle((New-Object System.Drawing.Rectangle($ctaX, $ctaY, $ctaW, $ctaH)))
+$pillPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255, 201, 162, 106), 2)
+$g.DrawPath($pillPen, $pillPath)
+$g.DrawString($ctaText, $ctaFont, $champagneBrush, ($ctaX + $ctaPadH), ($ctaY + $ctaPadV))
 
 $qualityParam = New-Object System.Drawing.Imaging.EncoderParameters(1)
 $qualityParam.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter([System.Drawing.Imaging.Encoder]::Quality, [long]88)
