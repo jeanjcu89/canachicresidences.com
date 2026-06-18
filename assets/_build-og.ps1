@@ -1,9 +1,28 @@
 Add-Type -AssemblyName System.Drawing
 
+$src = "c:\Projects\Cana Chic Residences\assets\render-corner.jpg"
 $out = "c:\Projects\Cana Chic Residences\assets\og-image.jpg"
 
 $W = 1200
 $H = 630
+
+$img = [System.Drawing.Image]::FromFile($src)
+
+$srcW = $img.Width
+$srcH = $img.Height
+$srcRatio = $srcW / $srcH
+$targetRatio = $W / $H
+if ($srcRatio -gt $targetRatio) {
+  $cropH = $srcH
+  $cropW = [int]($srcH * $targetRatio)
+  $cropX = [int](($srcW - $cropW) / 2)
+  $cropY = 0
+} else {
+  $cropW = $srcW
+  $cropH = [int]($srcW / $targetRatio)
+  $cropX = 0
+  $cropY = [int](($srcH - $cropH) / 2)
+}
 
 $bmp = New-Object System.Drawing.Bitmap($W, $H)
 $g = [System.Drawing.Graphics]::FromImage($bmp)
@@ -12,31 +31,31 @@ $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality
 $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
 $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::ClearTypeGridFit
 
-# Diagonal gradient — noir top-left, champagne-tinted deep noir bottom-right
+# Draw the render full-bleed
+$srcRect = New-Object System.Drawing.Rectangle($cropX, $cropY, $cropW, $cropH)
+$destRect = New-Object System.Drawing.Rectangle(0, 0, $W, $H)
+$g.DrawImage($img, $destRect, $srcRect, [System.Drawing.GraphicsUnit]::Pixel)
+
+# Heavy uniform black overlay so the centered text reads clearly
+$darkBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(165, 0, 0, 0))
+$g.FillRectangle($darkBrush, (New-Object System.Drawing.Rectangle(0, 0, $W, $H)))
+
+# Vertical gradient — extra darkness top and bottom, gentlest in the middle band
 $gradBrush = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
   (New-Object System.Drawing.PointF(0, 0)),
-  (New-Object System.Drawing.PointF($W, $H)),
-  [System.Drawing.Color]::FromArgb(255, 11, 11, 12),
-  [System.Drawing.Color]::FromArgb(255, 38, 28, 16)
+  (New-Object System.Drawing.PointF(0, $H)),
+  [System.Drawing.Color]::FromArgb(180, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(200, 0, 0, 0)
 )
 $blend = New-Object System.Drawing.Drawing2D.ColorBlend(3)
 $blend.Colors = @(
-  [System.Drawing.Color]::FromArgb(255, 8, 8, 9),
-  [System.Drawing.Color]::FromArgb(255, 22, 18, 14),
-  [System.Drawing.Color]::FromArgb(255, 44, 32, 18)
+  [System.Drawing.Color]::FromArgb(180, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(40, 0, 0, 0),
+  [System.Drawing.Color]::FromArgb(200, 0, 0, 0)
 )
-$blend.Positions = @(0.0, 0.55, 1.0)
+$blend.Positions = @(0.0, 0.5, 1.0)
 $gradBrush.InterpolationColors = $blend
 $g.FillRectangle($gradBrush, (New-Object System.Drawing.Rectangle(0, 0, $W, $H)))
-
-# Subtle champagne radial accent at bottom-right
-$radialPath = New-Object System.Drawing.Drawing2D.GraphicsPath
-$radialPath.AddEllipse(($W - 700), ($H - 400), 1100, 800)
-$pgBrush = New-Object System.Drawing.Drawing2D.PathGradientBrush($radialPath)
-$pgBrush.CenterPoint = New-Object System.Drawing.PointF(($W + 100), ($H + 100))
-$pgBrush.CenterColor = [System.Drawing.Color]::FromArgb(70, 201, 162, 106)
-$pgBrush.SurroundColors = @([System.Drawing.Color]::FromArgb(0, 0, 0, 0))
-$g.FillPath($pgBrush, $radialPath)
 
 # Champagne and white brushes
 $champagneBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 201, 162, 106))
@@ -45,7 +64,6 @@ $whiteBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromA
 # Text fonts
 $middot = [char]0xB7
 $uAcute = [char]0xDA
-$oAcute = [char]0xD3
 $tagText = "SANTIAGO  $middot  REP$($uAcute)BLICA DOMINICANA"
 $tagFont = New-Object System.Drawing.Font("Arial", 18, [System.Drawing.FontStyle]::Bold)
 $titleFont = New-Object System.Drawing.Font("Georgia", 78, [System.Drawing.FontStyle]::Regular)
@@ -113,5 +131,6 @@ $bmp.Save($out, $jpegCodec, $qualityParam)
 
 $g.Dispose()
 $bmp.Dispose()
+$img.Dispose()
 
 Write-Output "Saved $out (${W}x${H})"
